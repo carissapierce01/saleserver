@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const User = require('../db').import('../models/user');
+const validateSession = require('../middleware/validate-session')
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -59,5 +60,12 @@ router.post('/signup', (req, res) => {
       })
       .catch((err) => res.status(500).json({ error: err }));
   });
+
+  //! GET ALL USERS
+router.get('/', validateSession, (req, res) => {
+  User.findAll()
+      .then(user => res.status(200).json(user))
+      .catch(err => res.status(500).json({ error: err }))
+})
   
   module.exports = router;
