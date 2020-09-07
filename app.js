@@ -25,6 +25,6 @@ app.use('/shop', shop)
 app.use('/comment', comment)
 app.use('/user', user)
 
-app.listen(3001, function(){
-    console.log('App is listening on port 3000');
+app.listen(process.env.PORT, function(){
+    console.log(`server is listening on port ${process.env.PORT}`)
 })
