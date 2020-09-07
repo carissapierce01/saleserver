@@ -18,6 +18,7 @@ router.post("/create", validateSession, (req, res) => {
     const newComment = {
 
         nameOfCommenter: req.body.nameOfCommenter,
+        content: req.body.content,
         descriptionOfComment: req.body.descriptionOfComment
     }
 

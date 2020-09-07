@@ -1,6 +1,8 @@
 const router = require('express').Router();
 const User = require('../db').import('../models/user');
 const validateSession = require('../middleware/validate-session')
+const Shop = require('../db').import('../models/shop')
+const Comment = require('../db').import('../models/comment')
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -62,10 +64,38 @@ router.post('/signup', (req, res) => {
   });
 
   //! GET ALL USERS
-router.get('/', validateSession, (req, res) => {
+router.get('/:id', validateSession, (req, res) => {
   User.findAll()
       .then(user => res.status(200).json(user))
       .catch(err => res.status(500).json({ error: err }))
 })
-  
-  module.exports = router;
+
+//! GET ALL User Info
+router.get("/get", validateSession, (req, res) => {
+  User.findOne({
+    where: { id: req.user.id },
+    include: [
+      {
+        model: Comment,
+        include: [
+          {
+            model: User,
+            attributes: ["userName"]
+          }
+        ],
+      },
+    ],
+  })
+    .then((user) =>
+      res.status(200).json({
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        userName: user.userName,
+        comment: user.comment,
+      })
+    )
+    .catch((err) => res.status(500).json({ error: err }));
+});
+
+module.exports = router;
