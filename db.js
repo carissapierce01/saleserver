@@ -1,9 +1,10 @@
 const Sequelize = require("sequelize");
-const shop = require("./models/shop");
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
+
+const sequelize = new Sequelize('tales-sales', 'postgres','Christmas1!', {
+    host: "localhost",
     dialect: "postgres"
-}) 
+})
 
 sequelize.authenticate()
     .then(() => console.log(`${process.env.NAME} is Connected`))
@@ -11,13 +12,14 @@ sequelize.authenticate()
     
 user = sequelize.import('./models/user');
 comment = sequelize.import('./models/comment');
-shop = sequelize.import('./models/shop')
+shop = sequelize.import('./models/shop');
 
 user.hasMany(comment);
 comment.belongsTo(user);
 
 shop.hasMany(comment);
 comment.belongsTo(shop);
+
 
 
 module.exports = sequelize;
