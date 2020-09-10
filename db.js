@@ -1,14 +1,9 @@
 const Sequelize = require("sequelize");
 
 
-// const sequelize = new Sequelize('tales-sales', 'postgres','Christmas1!', {
-//     host: "localhost",
-//     dialect: "postgres"
-// })
-
 const sequelize = new Sequelize(process.env.DATABASE_URL, {
     dialect: "postgres"
-});
+}) 
 
 sequelize.authenticate()
     .then(() => console.log(`${process.env.NAME} is Connected`))
@@ -22,7 +17,7 @@ user.hasMany(comment);
 comment.belongsTo(user);
 
 shop.hasMany(comment);
-comment.belongsTo(shop);
+comment.belongsTo(shop)
 
 
 
